@@ -13,17 +13,9 @@ class Decals {
     this.decals = []
     this.intersects = []
 
-    this.position = new THREE.Vector3()
     this.tapPosition = new THREE.Vector2()
-    this.orientation = new THREE.Euler()
     this.size = new THREE.Vector3(10, 10, 10)
     this.raycaster = new THREE.Raycaster()
-
-    this.intersection = {
-      intersects: false,
-      point: new THREE.Vector3(),
-      normal: new THREE.Vector3(),
-    }
 
     this.params = {
       minScale: 0.2,
