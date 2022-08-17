@@ -1,6 +1,6 @@
 # vite-8thwall-three-decals
 
-- Demo using DecalGeomtry
+- Demo using DecalGeometry
 
 
 
