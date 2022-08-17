@@ -39,7 +39,7 @@ class ParticleSystem {
     )
 
     this.instance = new THREE.Points(particleGeometry, this.particleMaterial)
-    // this.instance.position.z = -2
+    this.instance.name = 'particles'
     this.scene.add(this.instance)
   }
 

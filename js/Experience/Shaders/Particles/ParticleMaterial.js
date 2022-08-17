@@ -14,7 +14,7 @@ class ParticleMaterial extends ShaderMaterial {
         uPixelRatio: { value: Math.min(window.devicePixelRatio, 2) },
         uSize: { value: 100 },
         uHighY: { value: 4 },
-        uLowY: { value: 0 },
+        uLowY: { value: 0.5 },
       },
       vertexShader,
       fragmentShader,

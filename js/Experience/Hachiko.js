@@ -6,14 +6,13 @@ class Hachiko {
     this.scene = options.scene
     this.gltfLoader = options.gltfLoader
     this.decals = options.decals
-    this.particleSystem = options.particleSystem
 
     this.init()
   }
 
   async init() {
     try {
-      const model = await this.gltfLoader.loadAsync(modelSrc)
+      const model = await this.gltfLoader.loadAsync(modelSrc2)
       this.model = model.scene
       this.model.position.z = -3
 
