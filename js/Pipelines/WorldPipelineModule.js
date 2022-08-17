@@ -4,10 +4,9 @@ import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader.js'
 import Dummy from '../Experience/Dummy'
 import Hachiko from '../Experience/Hachiko'
 import ParticleSystem from '../Experience/ParticleSystem'
-
-import modelSrc from '../../assets/models/hachiko.glb'
-import LoadingManager from '../Experience/Utils/LoadingManager'
 import Decals from '../Experience/Decals'
+
+import LoadingManager from '../Experience/Utils/LoadingManager'
 
 export const initWorldPipelineModule = () => {
   let dummy
@@ -47,9 +46,9 @@ export const initWorldPipelineModule = () => {
     /*-----------------------------------------------------------*/
 
     // Objects
-    particleSystem = new ParticleSystem({ scene, count: 500 })
+    particleSystem = new ParticleSystem({ scene, count: 600 })
     decals = new Decals({ scene, textureLoader, canvas, camera })
-    dummy = new Dummy({ scene, decals })
+    // dummy = new Dummy({ scene, decals })
     hachiko = new Hachiko({ scene, gltfLoader, decals })
 
     /*-----------------------------------------------------------*/
@@ -66,6 +65,7 @@ export const initWorldPipelineModule = () => {
     dummy?.update()
     particleSystem?.update()
     decals?.update()
+    hachiko?.update()
   }
 
   return {

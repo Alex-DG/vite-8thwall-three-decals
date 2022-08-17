@@ -1,6 +1,8 @@
 import modelSrc from '../../assets/models/hachiko.glb' // dog
 import modelSrc2 from '../../assets/models/shoe-draco.glb' // shoe
 
+import Mirror from './Mirror'
+
 class Hachiko {
   constructor(options) {
     this.scene = options.scene
@@ -12,9 +14,13 @@ class Hachiko {
 
   async init() {
     try {
-      const model = await this.gltfLoader.loadAsync(modelSrc2)
+      const model = await this.gltfLoader.loadAsync(modelSrc)
       this.model = model.scene
-      this.model.position.z = -3
+
+      this.model.position.z = -3.5
+
+      this.mirror = new Mirror({ mesh: this.model.children[0] })
+      this.model.add(this.mirror.instance)
 
       this.scene.add(this.model)
 
@@ -25,7 +31,9 @@ class Hachiko {
     }
   }
 
-  update() {}
+  update() {
+    this.mirror?.update()
+  }
 }
 
 export default Hachiko
