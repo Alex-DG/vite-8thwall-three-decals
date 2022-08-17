@@ -47,7 +47,7 @@ export const initWorldPipelineModule = () => {
     /*-----------------------------------------------------------*/
 
     // Objects
-    particleSystem = new ParticleSystem({ scene, count: 5000 })
+    particleSystem = new ParticleSystem({ scene, count: 500 })
     decals = new Decals({ scene, textureLoader, canvas, camera })
     dummy = new Dummy({ scene, decals })
     hachiko = new Hachiko({ scene, gltfLoader, decals })

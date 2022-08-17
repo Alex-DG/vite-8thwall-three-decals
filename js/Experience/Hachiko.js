@@ -6,6 +6,7 @@ class Hachiko {
     this.scene = options.scene
     this.gltfLoader = options.gltfLoader
     this.decals = options.decals
+    this.particleSystem = options.particleSystem
 
     this.init()
   }
@@ -17,8 +18,8 @@ class Hachiko {
       this.model.position.z = -3
 
       this.scene.add(this.model)
-      this.model.children[0].name = 'hachiko'
 
+      this.model.children[0].name = 'hachiko'
       this.decals.setTarget(this.model.children[0])
     } catch (error) {
       console.error({ error })

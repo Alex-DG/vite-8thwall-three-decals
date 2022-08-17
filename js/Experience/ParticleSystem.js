@@ -19,9 +19,9 @@ class ParticleSystem {
     for (let i = 0; i < count; i++) {
       positionArray.set(
         [
-          (Math.random() - 0.5) * 20, // -1 to 1
-          Math.random() * 20,
-          (Math.random() - 0.5) * 20,
+          (Math.random() - 0.5) * 4,
+          Math.random() * 10, // alternative effect -> scan effect on Y  => Math.random() * 1,
+          (Math.random() - 1) * 8,
         ],
         i * 3
       )
@@ -39,13 +39,13 @@ class ParticleSystem {
     )
 
     this.instance = new THREE.Points(particleGeometry, this.particleMaterial)
-
+    // this.instance.position.z = -2
     this.scene.add(this.instance)
   }
 
   update() {
     if (this.particleMaterial) {
-      this.particleMaterial.uniforms.uTime.value = performance.now()
+      this.particleMaterial.uniforms.uTime.value = performance.now() / 2500
     }
   }
 }

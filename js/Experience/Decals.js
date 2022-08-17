@@ -11,7 +11,6 @@ class Decals {
     this.textureLoader = options.textureLoader
 
     this.decals = []
-    this.intersects = []
 
     this.tapPosition = new THREE.Vector2()
     this.size = new THREE.Vector3(10, 10, 10)
@@ -78,6 +77,19 @@ class Decals {
     const { minScale, maxScale } = this.params
     const scale = minScale + Math.random() * (maxScale - minScale)
     this.size.set(scale, scale, scale)
+
+    console.log({ intersect })
+    // const geometry = intersect.object.geometry.clone()
+    // geometry.vertices = []
+    // var attr = geometry.getAttribute('position').array
+    // for (var i = 0; i < attr.length; i += 3) {
+    //   geometry.vertices.push(
+    //     new THREE.Vector3(attr[i], attr[i + 1], attr[i + 2])
+    //   )
+    // }
+    // intersect.object.geometry = geometry
+
+    // console.log({ obj: intersect.object })
 
     const decalGeometry = new DecalGeometry(
       intersect.object,
