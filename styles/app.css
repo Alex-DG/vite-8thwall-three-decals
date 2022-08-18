@@ -21,3 +21,7 @@ body {
 
   outline: none;
 }
+
+.tp-dfwv {
+  z-index: 999;
+}

@@ -19,9 +19,9 @@ class ParticleSystem {
     for (let i = 0; i < count; i++) {
       positionArray.set(
         [
-          (Math.random() - 0.5) * 4,
+          (Math.random() - 0.5) * 10,
           Math.random() * 10, // alternative effect -> scan effect on Y  => Math.random() * 1,
-          (Math.random() - 1) * 8,
+          (Math.random() - 0.5) * 10,
         ],
         i * 3
       )

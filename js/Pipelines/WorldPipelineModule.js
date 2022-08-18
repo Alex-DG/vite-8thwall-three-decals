@@ -2,17 +2,23 @@ import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'
 import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader.js'
 
 import Dummy from '../Experience/Dummy'
+import HachikoFlowers from '../Experience/HachikoFlowers'
 import Hachiko from '../Experience/Hachiko'
+import Shoe from '../Experience/Shoe'
 import ParticleSystem from '../Experience/ParticleSystem'
 import Decals from '../Experience/Decals'
 
 import LoadingManager from '../Experience/Utils/LoadingManager'
+import SurfaceSampler from '../Experience/SurfaceSampler'
 
 export const initWorldPipelineModule = () => {
   let dummy
   let particleSystem
+  let shoe
   let hachiko
+  let hachikoFlowers
   let decals
+  let surface
 
   const DRACO_DECODER_PATH =
     'https://raw.githubusercontent.com/mrdoob/three.js/dev/examples/js/libs/draco/'
@@ -46,10 +52,19 @@ export const initWorldPipelineModule = () => {
     /*-----------------------------------------------------------*/
 
     // Objects
-    particleSystem = new ParticleSystem({ scene, count: 600 })
-    decals = new Decals({ scene, textureLoader, canvas, camera })
     // dummy = new Dummy({ scene, decals })
-    hachiko = new Hachiko({ scene, gltfLoader, decals })
+    particleSystem = new ParticleSystem({ scene, count: 1000 })
+    decals = new Decals({ scene, textureLoader, canvas, camera })
+    surface = new SurfaceSampler({ scene })
+    // shoe = new Shoe({ scene, gltfLoader, decals })
+    hachikoFlowers = new HachikoFlowers({
+      scene,
+      gltfLoader,
+      decals,
+      canvas,
+      camera,
+      surface,
+    })
 
     /*-----------------------------------------------------------*/
 
@@ -62,10 +77,17 @@ export const initWorldPipelineModule = () => {
   }
 
   const updateWorld = () => {
-    dummy?.update()
+    // dummy?.update()
+
     particleSystem?.update()
+
+    surface?.update()
+
     decals?.update()
-    hachiko?.update()
+
+    shoe?.update()
+
+    hachikoFlowers?.update()
   }
 
   return {

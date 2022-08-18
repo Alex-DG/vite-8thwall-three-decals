@@ -43,29 +43,29 @@ class Mirror {
     this.mirror.position.z = this.mesh.position.z - offset - offset / 2
     this.mirror.position.y = this.mesh.position.y + offset + offset / 2
 
-    // const geometryCloned = mirrorGeometry2.clone()
+    const geometryCloned = mirrorGeometry2.clone()
 
-    // // > Left mirror
-    // this.mirrorLeft = new Reflector(geometryCloned, {
-    //   color: 0x777777,
-    //   clipBias: 0.003,
-    //   textureWidth: window.innerWidth * window.devicePixelRatio,
-    //   textureHeight: window.innerHeight * window.devicePixelRatio,
-    // })
-    // this.mirrorLeft.position.copy(this.mirror.position)
-    // this.mirrorLeft.position.x = (offset + 1) * -1
-    // this.mirrorLeft.rotation.y = Math.PI / 4
+    // > Left mirror
+    this.mirrorLeft = new Reflector(geometryCloned, {
+      color: 0x777777,
+      clipBias: 0.003,
+      textureWidth: window.innerWidth * window.devicePixelRatio,
+      textureHeight: window.innerHeight * window.devicePixelRatio,
+    })
+    this.mirrorLeft.position.copy(this.mirror.position)
+    this.mirrorLeft.position.x = (offset + 1) * -1
+    this.mirrorLeft.rotation.y = Math.PI / 4
 
-    // //> Right mirror
-    // this.mirrorRight = new Reflector(geometryCloned, {
-    //   color: 0x777777,
-    //   clipBias: 0.003,
-    //   textureWidth: window.innerWidth * window.devicePixelRatio,
-    //   textureHeight: window.innerHeight * window.devicePixelRatio,
-    // })
-    // this.mirrorRight.position.copy(this.mirror.position)
-    // this.mirrorRight.position.x = offset + 1
-    // this.mirrorRight.rotation.y = (Math.PI / 4) * -1
+    //> Right mirror
+    this.mirrorRight = new Reflector(geometryCloned, {
+      color: 0x777777,
+      clipBias: 0.003,
+      textureWidth: window.innerWidth * window.devicePixelRatio,
+      textureHeight: window.innerHeight * window.devicePixelRatio,
+    })
+    this.mirrorRight.position.copy(this.mirror.position)
+    this.mirrorRight.position.x = offset + 1
+    this.mirrorRight.rotation.y = (Math.PI / 4) * -1
 
     this.instance.add(this.mirror)
     this.instance.rotation.y = -0.3
