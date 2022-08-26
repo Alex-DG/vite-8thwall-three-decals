@@ -56,7 +56,7 @@ export const initWorldPipelineModule = () => {
     particleSystem = new ParticleSystem({ scene, count: 1000 })
     decals = new Decals({ scene, textureLoader, canvas, camera })
     // surface = new SurfaceSampler({ scene })
-    shoe = new Shoe({ scene, gltfLoader, decals })
+    // shoe = new Shoe({ scene, gltfLoader, decals })
     // hachikoFlowers = new HachikoFlowers({
     //   scene,
     //   gltfLoader,
@@ -65,6 +65,11 @@ export const initWorldPipelineModule = () => {
     //   camera,
     //   surface,
     // })
+    hachiko = new Hachiko({
+      scene,
+      gltfLoader,
+      decals,
+    })
 
     /*-----------------------------------------------------------*/
 
