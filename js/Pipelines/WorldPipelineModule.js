@@ -1,24 +1,24 @@
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'
 import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader.js'
 
-import Dummy from '../Experience/Dummy'
-import HachikoFlowers from '../Experience/HachikoFlowers'
-import Hachiko from '../Experience/Hachiko'
-import Shoe from '../Experience/Shoe'
-import ParticleSystem from '../Experience/ParticleSystem'
+// import Dummy from '../Experience/Dummy'
+// import HachikoFlowers from '../Experience/HachikoFlowers'
+// import Shoe from '../Experience/Shoe'
+// import ParticleSystem from '../Experience/ParticleSystem'
+// import SurfaceSampler from '../Experience/SurfaceSampler'
 import Decals from '../Experience/Decals'
+import Hachiko from '../Experience/Hachiko'
 
 import LoadingManager from '../Experience/Utils/LoadingManager'
-import SurfaceSampler from '../Experience/SurfaceSampler'
 
 export const initWorldPipelineModule = () => {
-  let dummy
-  let particleSystem
-  let shoe
-  let hachiko
-  let hachikoFlowers
+  // let dummy
+  // let particleSystem
+  // let shoe
+  // let hachiko
+  // let hachikoFlowers
   let decals
-  let surface
+  // let surface
 
   const DRACO_DECODER_PATH =
     'https://raw.githubusercontent.com/mrdoob/three.js/dev/examples/js/libs/draco/'
@@ -39,7 +39,8 @@ export const initWorldPipelineModule = () => {
     /*-----------------------------------------------------------*/
 
     // Lights
-    scene.add(new THREE.AmbientLight(0x443333))
+    // scene.add(new THREE.AmbientLight(0x443333))
+    scene.add(new THREE.AmbientLight(0xffffff))
 
     const dirLight1 = new THREE.DirectionalLight(0xffddcc, 1)
     dirLight1.position.set(1, 0.75, 0.5)
@@ -53,7 +54,7 @@ export const initWorldPipelineModule = () => {
 
     // Objects
     // dummy = new Dummy({ scene, decals })
-    particleSystem = new ParticleSystem({ scene, count: 1000 })
+    // particleSystem = new ParticleSystem({ scene, count: 1000 })
     decals = new Decals({ scene, textureLoader, canvas, camera })
     // surface = new SurfaceSampler({ scene })
     // shoe = new Shoe({ scene, gltfLoader, decals })
@@ -84,15 +85,15 @@ export const initWorldPipelineModule = () => {
   const updateWorld = () => {
     // dummy?.update()
 
-    particleSystem?.update()
+    // particleSystem?.update()
 
-    surface?.update()
+    // surface?.update()
 
     decals?.update()
 
-    shoe?.update()
+    // shoe?.update()
 
-    hachikoFlowers?.update()
+    // hachikoFlowers?.update()
   }
 
   return {

@@ -6,8 +6,20 @@ class DebugPane_ {
     this.pane = new Pane()
   }
 
-  addSlider(obj, name, params) {
-    this.pane.addInput(obj, name, params)
+  addButton(params, callback) {
+    this.pane.addButton(params).on('click', () => {
+      callback()
+    })
+  }
+
+  addSlider(obj, name, params, callback = null) {
+    if (callback) {
+      this.pane.addInput(obj, name, params).on('change', ({ value }) => {
+        callback(value)
+      })
+    } else {
+      this.pane.addInput(obj, name, params)
+    }
   }
 
   addColorPicker(obj, name, params, callback) {

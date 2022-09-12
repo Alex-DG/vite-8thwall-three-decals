@@ -63,23 +63,23 @@ class Hachiko {
           child.receiveShadow = true
           child.geometry.computeVertexNormals() // Computes vertex normals by averaging face normals https://threejs.org/docs/#api/en/core/BufferGeometry.computeVertexNormals
 
-          if (this.iterations % 2 === 0) {
-            child.material = new THREE.MeshStandardMaterial({
-              color: 0x00ffff,
-              wireframe: true,
-            })
-          }
+          // if (this.iterations % 2 === 0) {
+          //   child.material = new THREE.MeshStandardMaterial({
+          //     color: 0x00ffff,
+          //     wireframe: true,
+          //   })
+          // }
 
           objectGeometries.push(child.geometry)
         }
       })
 
-      const mergedGeometries = mergeBufferGeometries(objectGeometries)
-      const mergedGeometriesMat = new THREE.MeshNormalMaterial()
-      this.mergedGeometriesMesh = new THREE.Mesh(
-        mergedGeometries,
-        mergedGeometriesMat
-      )
+      // const mergedGeometries = mergeBufferGeometries(objectGeometries)
+      // const mergedGeometriesMat = new THREE.MeshNormalMaterial()
+      // this.mergedGeometriesMesh = new THREE.Mesh(
+      //   mergedGeometries,
+      //   mergedGeometriesMat
+      // )
 
       // this.model.traverse((child) => {
       //   if (child.isMesh) {
@@ -101,6 +101,7 @@ class Hachiko {
       // })
 
       // this.model.position.z = -3.5
+      this.model.position.y = -0.7
 
       // this.mirror = new Mirror({ mesh: this.model.children[0] })
       // this.model.add(this.mirror.instance)
@@ -117,8 +118,7 @@ class Hachiko {
   }
 
   update() {
-    this.mirror?.update()
-
+    // this.mirror?.update()
     // if (this.model) {
     //   this.model.traverse((child) => {
     //     if (child.isMesh) {

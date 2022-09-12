@@ -1,7 +1,13 @@
 import { DecalGeometry } from 'three/examples/jsm/geometries/DecalGeometry.js'
 
-import decalDiffuseSrc from '../../assets/textures/decals/decal-diffuse.png'
-import decalNormalSrc from '../../assets/textures/decals/decal-normal.jpg'
+import decalDiffuseSrc from '../../../assets/textures/decals/decal-diffuse.png'
+import decalNormalSrc from '../../../assets/textures/decals/decal-normal.jpg'
+
+import { getRandomArrayItem } from '../../utils/maths'
+
+import DebugPane from '../Utils/Debug'
+
+import { splashColorCodes } from './data'
 
 class Decals {
   constructor(options) {
@@ -17,8 +23,8 @@ class Decals {
     this.raycaster = new THREE.Raycaster()
 
     this.params = {
-      minScale: 0.2,
-      maxScale: 1,
+      minScale: 0.5,
+      maxScale: 2.5,
       rotate: true,
     }
 
@@ -29,6 +35,7 @@ class Decals {
   bind() {
     this.removeDecals = this.removeDecals.bind(this)
     this.placeDecalsTouchHandler = this.placeDecalsTouchHandler.bind(this)
+    this.setDebug = this.setDebug.bind(this)
     this.shoot = this.shoot.bind(this)
   }
 
@@ -39,18 +46,22 @@ class Decals {
         this.textureLoader.loadAsync(decalNormalSrc),
       ])
 
+      decalNormal.wrapS = THREE.RepeatWrapping
+      decalNormal.wrapT = THREE.RepeatWrapping
+
       this.decalMaterial = new THREE.MeshPhongMaterial({
-        specular: 0x444444,
+        specular: '#ffffff',
         map: decalDiffuse,
         normalMap: decalNormal,
         normalScale: new THREE.Vector2(1, 1),
-        shininess: 30,
+        shininess: 25,
         transparent: true,
         depthTest: true,
         depthWrite: false,
         polygonOffset: true,
         polygonOffsetFactor: -4,
-        wireframe: false,
+        // wireframe: true,
+        side: THREE.FrontSide,
       })
 
       // Events
@@ -59,10 +70,14 @@ class Decals {
         this.placeDecalsTouchHandler,
         true
       )
+
+      this.setDebug()
     } catch (error) {
       console.error({ error })
     }
   }
+
+  ////////////////////////////////////////////////////////////////////////////////
 
   shoot(intersect) {
     const position = intersect.point.clone()
@@ -78,7 +93,6 @@ class Decals {
     const scale = minScale + Math.random() * (maxScale - minScale)
     this.size.set(scale, scale, scale)
 
-    console.log({ intersect })
     // const geometry = intersect.object.geometry.clone()
     // geometry.vertices = []
     // var attr = geometry.getAttribute('position').array
@@ -99,8 +113,12 @@ class Decals {
     )
 
     const material = this.decalMaterial.clone()
-    material.color.setHex(Math.random() * 0xffffff)
+    // material.color.setHex(Math.random() * 0xffffff)
+    const code = getRandomArrayItem(splashColorCodes)
+    material.color = new THREE.Color(code)
+    material.color.convertSRGBToLinear()
 
+    console.log({ color: material.color })
     const decal = new THREE.Mesh(decalGeometry, material)
     decal.receiveShadow = true
 
@@ -123,27 +141,125 @@ class Decals {
       // Raycast against the object.
       const intersects = this.raycaster.intersectObject(this.mesh)
 
-      console.log('🙈', 'intersects?')
+      // console.log('🙈', 'intersects?')
 
       if (intersects.length > 0) {
         const intersect = intersects[0]
-        console.log('🐵✨', { intersect })
+        // console.log('🐵✨', { intersect })
         this.shoot(intersect)
       }
     }
+  }
+
+  removeDecals() {
+    this.decals.forEach((d) => {
+      if (d) {
+        d.geometry.dispose()
+        d.material.dispose()
+
+        this.scene.remove(d)
+      }
+    })
+
+    this.decals.length = 0
+  }
+
+  ////////////////////////////////////////////////////////////////////////////////
+
+  setDebug() {
+    const options = {
+      specular: {
+        color: '#ffffff',
+      },
+    }
+
+    const decalMaterial = this.decalMaterial
+
+    /**
+     * Callbacks
+     */
+    const onChangeShininess = (value) => {
+      decalMaterial.shininess = value
+      decalMaterial.needsUpdate = true
+      this.decals?.forEach((d) => {
+        if (d) {
+          d.material.shininess = value
+          d.material.needsUpdate = true
+        }
+      })
+    }
+    const onChangeSpecular = (value) => {
+      decalMaterial.specular = new THREE.Color(value)
+      decalMaterial.needsUpdate = true
+      this.decals?.forEach((d) => {
+        if (d) {
+          d.material.specular = new THREE.Color(value)
+          d.material.needsUpdate = true
+        }
+      })
+    }
+    const onChangeNormalScale = (value) => {
+      decalMaterial.normalScale = value
+      decalMaterial.needsUpdate = true
+      this.decals?.forEach((d) => {
+        if (d) {
+          d.material.normalScale = value
+          d.material.needsUpdate = true
+        }
+      })
+    }
+
+    /**
+     * Material
+     */
+    DebugPane.addSlider(
+      this.decalMaterial,
+      'shininess',
+      {
+        min: 0,
+        max: 100,
+        step: 0.001,
+      },
+      onChangeShininess
+    )
+    DebugPane.addColorPicker(
+      options.specular,
+      'color',
+      {
+        label: 'specular',
+      },
+      onChangeSpecular
+    )
+    DebugPane.addSlider(
+      this.decalMaterial,
+      'normalScale',
+      {
+        x: {
+          min: 0,
+          max: 1,
+          step: 0.0001,
+        },
+        y: {
+          min: 0,
+          max: 1,
+          step: 0.0001,
+        },
+      },
+      onChangeNormalScale
+    )
+
+    /**
+     * Remove button
+     */
+    const onRemoveDecals = () => this.removeDecals()
+    DebugPane.addButton({ label: 'decals', title: 'Remove' }, onRemoveDecals)
   }
 
   setTarget(mesh) {
     this.mesh = mesh
   }
 
-  removeDecals() {
-    this.decals.forEach((d) => {
-      this.scene.remove(d)
-    })
-
-    this.decals.length = 0
-  }
+  ////////////////////////////////////////////////////////////////////////////////
 
   update() {}
 }

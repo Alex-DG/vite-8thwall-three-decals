@@ -27,3 +27,7 @@ export const getRandomSpherePoint = (position, radius, is2D = true) => {
 
   return p
 }
+
+export const getRandomArrayItem = (arr) => {
+  return arr[Math.floor(Math.random() * arr.length)]
+}
