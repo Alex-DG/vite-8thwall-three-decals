@@ -9,6 +9,8 @@ import DebugPane from '../Utils/Debug'
 
 import { splashColorCodes } from './data'
 
+import { gsap } from 'gsap'
+
 class Decals {
   constructor(options) {
     this.scene = options.scene
@@ -19,12 +21,13 @@ class Decals {
     this.decals = []
 
     this.tapPosition = new THREE.Vector2()
+    this.defaultSize = new THREE.Vector3(0, 0, 0)
     this.size = new THREE.Vector3(10, 10, 10)
     this.raycaster = new THREE.Raycaster()
 
     this.params = {
-      minScale: 0.5,
-      maxScale: 2.5,
+      minScale: 2,
+      maxScale: 3,
       rotate: true,
     }
 
@@ -45,10 +48,6 @@ class Decals {
         this.textureLoader.loadAsync(decalDiffuseSrc),
         this.textureLoader.loadAsync(decalNormalSrc),
       ])
-
-      decalNormal.wrapS = THREE.RepeatWrapping
-      decalNormal.wrapT = THREE.RepeatWrapping
-
       this.decalMaterial = new THREE.MeshPhongMaterial({
         specular: '#ffffff',
         map: decalDiffuse,
@@ -60,8 +59,9 @@ class Decals {
         depthWrite: false,
         polygonOffset: true,
         polygonOffsetFactor: -4,
-        // wireframe: true,
-        side: THREE.FrontSide,
+        dithering: true,
+        // side: THREE.FrontSide,
+        precision: 'highp',
       })
 
       // Events
@@ -93,18 +93,6 @@ class Decals {
     const scale = minScale + Math.random() * (maxScale - minScale)
     this.size.set(scale, scale, scale)
 
-    // const geometry = intersect.object.geometry.clone()
-    // geometry.vertices = []
-    // var attr = geometry.getAttribute('position').array
-    // for (var i = 0; i < attr.length; i += 3) {
-    //   geometry.vertices.push(
-    //     new THREE.Vector3(attr[i], attr[i + 1], attr[i + 2])
-    //   )
-    // }
-    // intersect.object.geometry = geometry
-
-    // console.log({ obj: intersect.object })
-
     const decalGeometry = new DecalGeometry(
       intersect.object,
       intersect.point,
@@ -117,13 +105,51 @@ class Decals {
     const code = getRandomArrayItem(splashColorCodes)
     material.color = new THREE.Color(code)
     material.color.convertSRGBToLinear()
+    material.needsUpdate = true
 
-    console.log({ color: material.color })
     const decal = new THREE.Mesh(decalGeometry, material)
     decal.receiveShadow = true
 
     this.decals.push(decal)
     this.scene.add(decal)
+
+    gsap.fromTo(
+      decal.material,
+      {
+        opacity: 0.25,
+      },
+      {
+        opacity: 1,
+        duration: 0.1,
+        ease: 'power3.out',
+      }
+    )
+
+    // if (position.y < 0) {
+    //   gsap.fromTo(
+    //     decal.scale,
+    //     {
+    //       x: 0.5,
+    //     },
+    //     {
+    //       x: 1,
+    //       duration: 0.08,
+    //       ease: 'power3.out',
+    //     }
+    //   )
+    // } else {
+    //   gsap.fromTo(
+    //     decal.scale,
+    //     {
+    //       y: 0.5,
+    //     },
+    //     {
+    //       y: 1,
+    //       duration: 0.12,
+    //       ease: 'power3.out',
+    //     }
+    //   )
+    // }
   }
 
   placeDecalsTouchHandler(e) {
@@ -247,6 +273,20 @@ class Decals {
       },
       onChangeNormalScale
     )
+
+    /**
+     * Decal scale options
+     */
+    DebugPane.addSlider(this.params, 'minScale', {
+      min: 0,
+      max: 10,
+      step: 0.001,
+    })
+    DebugPane.addSlider(this.params, 'maxScale', {
+      min: 0,
+      max: 10,
+      step: 0.001,
+    })
 
     /**
      * Remove button

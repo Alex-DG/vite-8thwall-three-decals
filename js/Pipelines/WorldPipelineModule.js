@@ -66,6 +66,7 @@ export const initWorldPipelineModule = () => {
     //   camera,
     //   surface,
     // })
+
     hachiko = new Hachiko({
       scene,
       gltfLoader,

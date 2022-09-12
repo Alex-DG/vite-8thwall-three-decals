@@ -1,11 +1,12 @@
+// import modelSrc from '../../assets/models/shop2.glb'
 import modelSrc from '../../assets/models/hachiko.glb' // dog
-import modelSrc2 from '../../assets/models/shoe-draco.glb' // shoe
+// import modelSrc from '../../assets/models/shoe-draco.glb' // shoe
 
-import Mirror from './Mirror'
-import XrayMaterial from './Shaders/XRay/XrayMaterial'
+// import Mirror from './Mirror'
+// import XrayMaterial from './Shaders/XRay/XrayMaterial'
 import DebugPane from './Utils/Debug'
 
-import { mergeBufferGeometries } from 'three/examples/jsm/utils/BufferGeometryUtils'
+// import { mergeBufferGeometries } from 'three/examples/jsm/utils/BufferGeometryUtils'
 
 class Hachiko {
   constructor(options) {
@@ -50,14 +51,15 @@ class Hachiko {
     try {
       const model = await this.gltfLoader.loadAsync(modelSrc)
 
-      this.iterations = 0
+      // this.iterations = 0
 
       let objectGeometries = []
 
       this.model = model.scene
+      this.model.scale.multiplyScalar(1.5)
       this.model.traverse((child) => {
         if (child.isMesh) {
-          this.iterations++
+          // this.iterations++
 
           child.castShadow = true
           child.receiveShadow = true

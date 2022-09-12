@@ -54,6 +54,7 @@ const setRenderer = ({ canvas, sizes, GLctx }) => {
 
 export const initXRScenePipelineModule = () => {
   let scene
+  let scene2 = new THREE.Scene()
   let camera
   let renderer
   let sizes
@@ -154,6 +155,8 @@ export const initXRScenePipelineModule = () => {
       }
 
       renderer.render(scene, camera)
+      renderer.clearDepth()
+      renderer.render(scene2, camera)
     },
     xrScene: () => xrScene,
   }
