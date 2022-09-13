@@ -10,6 +10,7 @@ import Decals from '../Experience/Decals'
 import Hachiko from '../Experience/Hachiko'
 
 import LoadingManager from '../Experience/Utils/LoadingManager'
+import ToyGun from '../Experience/ToyGun'
 
 export const initWorldPipelineModule = () => {
   // let dummy
@@ -18,13 +19,19 @@ export const initWorldPipelineModule = () => {
   // let hachiko
   // let hachikoFlowers
   let decals
+  let toyGun
   // let surface
 
   const DRACO_DECODER_PATH =
     'https://raw.githubusercontent.com/mrdoob/three.js/dev/examples/js/libs/draco/'
 
   const init = () => {
-    const { scene, canvas, camera } = XR8.Threejs.xrScene()
+    const { scene, uiScene, canvas, camera, uiCamera } = XR8.Threejs.xrScene()
+
+    // const enableGimbalBtn = document.querySelector('.pistol-btn')
+    // enableGimbalBtn.addEventListener('click', () => {
+    //   alert('yoyo')
+    // })
 
     /*-----------------------------------------------------------*/
 
@@ -55,7 +62,7 @@ export const initWorldPipelineModule = () => {
     // Objects
     // dummy = new Dummy({ scene, decals })
     // particleSystem = new ParticleSystem({ scene, count: 1000 })
-    decals = new Decals({ scene, textureLoader, canvas, camera })
+    decals = new Decals({ scene, textureLoader, canvas, camera, uiCamera })
     // surface = new SurfaceSampler({ scene })
     // shoe = new Shoe({ scene, gltfLoader, decals })
     // hachikoFlowers = new HachikoFlowers({
@@ -66,6 +73,15 @@ export const initWorldPipelineModule = () => {
     //   camera,
     //   surface,
     // })
+
+    toyGun = new ToyGun({
+      scene,
+      uiScene,
+      gltfLoader,
+      camera,
+      textureLoader,
+      decals,
+    })
 
     hachiko = new Hachiko({
       scene,

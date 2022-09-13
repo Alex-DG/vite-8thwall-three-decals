@@ -21,7 +21,7 @@ const setCamera = ({ sizes }) => {
 
   // Set the initial camera position relative to the scene we just laid out. This must be at a
   // height greater than y=0.
-  camera.position.set(0, 2, 4)
+  camera.position.set(0, 2, 5)
 
   XR8.XrController.updateCameraProjectionMatrix({
     origin: camera.position,
@@ -54,8 +54,9 @@ const setRenderer = ({ canvas, sizes, GLctx }) => {
 
 export const initXRScenePipelineModule = () => {
   let scene
-  let scene2 = new THREE.Scene()
+  let uiScene
   let camera
+  let uiCamera
   let renderer
   let sizes
 
@@ -74,16 +75,26 @@ export const initXRScenePipelineModule = () => {
 
     // Scene
     scene = setScene()
+    uiScene = new THREE.Scene()
 
     // Camera
     camera = setCamera({ sizes })
     scene.add(camera)
 
+    uiCamera = new THREE.OrthographicCamera(
+      -1,
+      1,
+      1 * camera.aspect,
+      -1 * camera.aspect,
+      1,
+      1000
+    )
+
     // Renderer.
     renderer = setRenderer({ canvas, sizes, GLctx })
 
     // XR Scene Data
-    xrSceneData = { scene, camera, renderer, canvas }
+    xrSceneData = { scene, camera, uiScene, uiCamera, renderer, canvas }
     window.xrSceneData = xrSceneData
     window.XR8.Threejs.xrScene = xrScene
 
@@ -144,19 +155,29 @@ export const initXRScenePipelineModule = () => {
     onCanvasSizeChange: ({ canvasWidth, canvasHeight }) => {
       if (!engaged) return
       setSizes({ sizes, canvasWidth, canvasHeight })
+
+      // camera.aspect = canvasWidth / canvasHeight
+      // camera.updateProjectionMatrix()
+
+      // uiCamera.left = -camera_.aspect
+      // uiCamera.right = camera_.aspect
+      // uiCamera.updateProjectionMatrix()
+
       renderer.setSize(canvasWidth, canvasHeight)
     },
     onRender: () => {
       renderer.clearDepth()
 
-      if (needsPrerenderFinish) {
-        renderer.getContext().finish()
-        // renderer.getContext().flush()
-      }
+      // if (needsPrerenderFinish) {
+      //   renderer.getContext().finish()
+      //   // renderer.getContext().flush()
+      // }
 
       renderer.render(scene, camera)
-      renderer.clearDepth()
-      renderer.render(scene2, camera)
+      // renderer.clearDepth()
+      renderer.autoClear = false
+
+      renderer.render(uiScene, uiCamera)
     },
     xrScene: () => xrScene,
   }

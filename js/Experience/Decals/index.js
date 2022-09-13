@@ -15,6 +15,7 @@ class Decals {
   constructor(options) {
     this.scene = options.scene
     this.camera = options.camera
+    this.uiCamera = options.uiCamera
     this.canvas = options.canvas
     this.textureLoader = options.textureLoader
 
@@ -24,6 +25,7 @@ class Decals {
     this.defaultSize = new THREE.Vector3(0, 0, 0)
     this.size = new THREE.Vector3(10, 10, 10)
     this.raycaster = new THREE.Raycaster()
+    this.uiRaycaster = new THREE.Raycaster()
 
     this.params = {
       minScale: 2,
@@ -71,7 +73,7 @@ class Decals {
         true
       )
 
-      this.setDebug()
+      // this.setDebug()
     } catch (error) {
       console.error({ error })
     }
@@ -113,17 +115,32 @@ class Decals {
     this.decals.push(decal)
     this.scene.add(decal)
 
-    gsap.fromTo(
-      decal.material,
-      {
-        opacity: 0.25,
-      },
-      {
-        opacity: 1,
-        duration: 0.1,
-        ease: 'power3.out',
-      }
-    )
+    if (this.toyGun) {
+      const pos = this.toyGun.position.clone()
+      gsap.fromTo(
+        this.toyGun.position,
+        {
+          z: pos.z - 1,
+        },
+        {
+          z: pos.z,
+          duration: 1.5,
+          ease: 'elastic',
+        }
+      )
+    }
+
+    // gsap.fromTo(
+    //   decal.material,
+    //   {
+    //     opacity: 0.25,
+    //   },
+    //   {
+    //     opacity: 1,
+    //     duration: 0.1,
+    //     ease: 'power3.out',
+    //   }
+    // )
 
     // if (position.y < 0) {
     //   gsap.fromTo(
@@ -153,7 +170,7 @@ class Decals {
   }
 
   placeDecalsTouchHandler(e) {
-    if (this.mesh) {
+    if (this.mesh && this.cursor) {
       if (e.touches.length === 2) XR8.XrController.recenter()
       if (e.touches.length > 2) return
 
@@ -163,16 +180,19 @@ class Decals {
 
       // Update the picking ray with the camera and tap position.
       this.raycaster.setFromCamera(this.tapPosition, this.camera)
+      this.uiRaycaster.setFromCamera(this.tapPosition, this.uiCamera)
 
       // Raycast against the object.
       const intersects = this.raycaster.intersectObject(this.mesh)
 
-      // console.log('🙈', 'intersects?')
+      // Raycast against the cursor.
+      const cursorIntersects = this.uiRaycaster.intersectObject(this.cursor)
 
-      if (intersects.length > 0) {
-        const intersect = intersects[0]
-        // console.log('🐵✨', { intersect })
-        this.shoot(intersect)
+      //  On tap cursor
+      if (cursorIntersects[0]?.object?.name === 'cursor') {
+        if (intersects.length > 0) {
+          this.shoot(intersects[0])
+        }
       }
     }
   }
@@ -191,6 +211,14 @@ class Decals {
   }
 
   ////////////////////////////////////////////////////////////////////////////////
+
+  setCursor(c) {
+    this.cursor = c
+  }
+
+  setToyGun(tg) {
+    this.toyGun = tg
+  }
 
   setDebug() {
     const options = {

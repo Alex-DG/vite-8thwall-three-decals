@@ -11,8 +11,6 @@ export const splashColorCodes = [
   '#bff1e5',
   '#3bc335',
   '#7af5ca',
-  '#448bff',
-  '#101ab3',
   '#d645c8',
   '#0afe15',
   '#0acdfe',

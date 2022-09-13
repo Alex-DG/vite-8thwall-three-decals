@@ -50,7 +50,7 @@ class Hachiko {
   async init() {
     try {
       const model = await this.gltfLoader.loadAsync(modelSrc)
-
+      // model.scene.renderOrder = 0
       // this.iterations = 0
 
       let objectGeometries = []
@@ -61,6 +61,7 @@ class Hachiko {
         if (child.isMesh) {
           // this.iterations++
 
+          child.material.transparent = true
           child.castShadow = true
           child.receiveShadow = true
           child.geometry.computeVertexNormals() // Computes vertex normals by averaging face normals https://threejs.org/docs/#api/en/core/BufferGeometry.computeVertexNormals

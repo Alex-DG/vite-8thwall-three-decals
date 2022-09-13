@@ -25,3 +25,24 @@ body {
 .tp-dfwv {
   z-index: 999;
 }
+
+.btn-container {
+  position: absolute;
+  z-index: 999;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  width: fit-content;
+  margin: auto;
+}
+.pistol-btn {
+  padding: 0.5em;
+  border-radius: 8px;
+
+  font-size: 1.5rem;
+
+  border: 2px solid greenyellow;
+  background-color: hotpink;
+  color: aliceblue;
+  margin: 1em;
+}
